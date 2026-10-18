@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>stitchlight — double exposure → thread</title>
+<style>
+:root{--bg:#14110f;--panel:#1f1a17;--ink:#efe6da;--dim:#a39686;--acc:#d9a35b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,sans-serif}
+header{padding:16px 22px;border-bottom:1px solid #2c2622}h1{margin:0;font-size:20px;letter-spacing:.04em}h1 b{color:var(--acc)}
+header p{margin:4px 0 0;color:var(--dim)}main{display:grid;grid-template-columns:300px 1fr;gap:16px;padding:16px}
+aside{background:var(--panel);border-radius:10px;padding:14px}label{display:block;margin:10px 0 4px;color:var(--dim);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+input[type=range],select{width:100%}button{background:var(--acc);color:#1a130c;border:0;border-radius:6px;padding:8px 10px;margin:4px 4px 0 0;font-weight:600;cursor:pointer}
+button.ghost{background:#342c26;color:var(--ink)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+figure{margin:0;background:var(--panel);border-radius:10px;padding:10px}figcaption{color:var(--dim);font-size:12px;margin-top:6px}
+canvas{width:100%;height:auto;border-radius:6px;background:#f4f0e8;display:block}#stats{font-family:ui-monospace,monospace;font-size:12px;color:var(--dim);white-space:pre-wrap;margin-top:10px}
+.sw{display:inline-block;width:18px;height:18px;border-radius:50%;margin:2px;border:1px solid #0006}
+</style></head><body>
+<header><h1><b>stitch</b>light</h1><p>Double exposure → thread palette → tatami stitches → DST + SVG (print / laser / CNC). Runs fully in your browser; nothing is uploaded.</p></header>
+<main><aside>
+<label>Portrait (subject on bright background)</label><input type="file" id="fp" accept="image/*">
+<label>Scene (landscape / texture)</label><input type="file" id="fs" accept="image/*">
+<label>Blend</label><select id="mode"><option>screen</option><option>multiply</option><option>lighten</option></select>
+<label>Silhouette threshold <span id="vth"></span></label><input type="range" id="th" min="0.2" max="0.9" step="0.01" value="0.55">
+<label>Thread colours <span id="vk"></span></label><input type="range" id="k" min="2" max="12" value="6">
+<label>Design width mm <span id="vw"></span></label><input type="range" id="w" min="40" max="200" value="100">
+<label>Row spacing mm <span id="vr"></span></label><input type="range" id="row" min="0.3" max="1.2" step="0.05" value="0.45">
+<div style="margin-top:12px"><button id="bdst">Download .DST</button><button id="bsvg" class="ghost">Print SVG</button><button id="bcnc" class="ghost">CNC/laser SVG</button><button id="bpng" class="ghost">Blend PNG</button></div>
+<div id="pal"></div><div id="stats"></div>
+</aside>
+<section class="grid">
+<figure><canvas id="cb"></canvas><figcaption>1 · Double exposure (scene inside the silhouette)</figcaption></figure>
+<figure><canvas id="cq"></canvas><figcaption>2 · Thread palette (fabric = unstitched)</figcaption></figure>
+<figure><canvas id="cs"></canvas><figcaption>3 · Stitch simulation (light fills first, dark on top)</figcaption></figure>
+</section></main>
+<script src="stitchlight.js"></script></body></html>
